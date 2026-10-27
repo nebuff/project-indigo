@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Indigo
+GenericName=Web Browser
+Comment=Browse the web
+Exec=indigo %U
+Icon=com.projectindigo.Browser
+Terminal=false
+Categories=Network;WebBrowser;
+StartupNotify=true

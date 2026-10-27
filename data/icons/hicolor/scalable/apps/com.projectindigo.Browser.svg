@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#62a0ea"/>
+      <stop offset="0.5" stop-color="#3584e4"/>
+      <stop offset="1" stop-color="#1a5fb4"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="orb">
+      <circle cx="512" cy="512" r="236"/>
+    </clipPath>
+  </defs>
+
+  <rect x="76" y="76" width="872" height="872" rx="202" fill="url(#body)"/>
+  <rect x="76" y="76" width="872" height="872" rx="202" fill="url(#sheen)"/>
+
+  <g clip-path="url(#orb)" fill="none" stroke="#ffffff" stroke-opacity="0.96"
+     stroke-width="30" stroke-linecap="round">
+    <circle cx="512" cy="512" r="236"/>
+    <ellipse cx="512" cy="512" rx="112" ry="236"/>
+    <ellipse cx="512" cy="512" rx="236" ry="112"/>
+    <path d="M276 512H748"/>
+  </g>
+</svg>

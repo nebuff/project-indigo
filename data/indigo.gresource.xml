@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <!-- GTK resolves gtk_icon_theme_add_resource_path() paths as a theme root
+       ("scalable/apps/...\"), unlike on-disk icon themes which need the
+       hicolor level. The alias gives the resource the layout GTK expects
+       while the installed copy stays a valid hicolor icon. -->
+  <gresource prefix="/com/projectindigo/Browser">
+    <file alias="icons/scalable/apps/com.projectindigo.Browser.svg">icons/hicolor/scalable/apps/com.projectindigo.Browser.svg</file>
+  </gresource>
+</gresources>
