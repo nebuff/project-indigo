@@ -29,3 +29,11 @@ meson setup build
 ninja -C build
 ./build/indigo
 ```
+
+## Desktop look
+
+Indigo follows the desktop it runs on: GNOME sessions get a header bar with
+the navigation controls and address bar, and fall back from a leftover
+KDE/Breeze theme to Adwaita. KDE sessions keep the toolbar above the tab
+strip and their system theme. Set `INDIGO_LOOK=gnome` or `INDIGO_LOOK=kde`
+to force one look on any desktop.

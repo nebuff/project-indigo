@@ -1,6 +1,7 @@
 #include "browser.h"
 
 #include "history.h"
+#include "look.h"
 #include "menu.h"
 #include "omnibox.h"
 #include "pages.h"
@@ -512,6 +513,9 @@ GtkWidget *
 browser_window_new(GtkApplication *application)
 {
     Browser *browser = g_new0(Browser, 1);
+    IndigoLook look = indigo_look_current();
+
+    indigo_look_apply_theme(look);
 
     browser->history = history_load();
     browser->window = gtk_application_window_new(application);
@@ -523,12 +527,6 @@ browser_window_new(GtkApplication *application)
     gtk_widget_set_vexpand(browser->notebook, TRUE);
     g_signal_connect(browser->notebook, "switch-page", G_CALLBACK(on_switch_page),
                      browser);
-
-    GtkWidget *toolbar = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
-    gtk_widget_set_margin_start(toolbar, 6);
-    gtk_widget_set_margin_end(toolbar, 6);
-    gtk_widget_set_margin_top(toolbar, 6);
-    gtk_widget_set_margin_bottom(toolbar, 6);
 
     browser->back = gtk_button_new_from_icon_name("go-previous-symbolic");
     gtk_widget_add_css_class(browser->back, "flat");
@@ -561,12 +559,6 @@ browser_window_new(GtkApplication *application)
     gtk_widget_add_css_class(menu_button, "flat");
     gtk_widget_set_tooltip_text(menu_button, "Main Menu");
 
-    gtk_box_append(GTK_BOX(toolbar), browser->back);
-    gtk_box_append(GTK_BOX(toolbar), browser->forward);
-    gtk_box_append(GTK_BOX(toolbar), browser->refresh);
-    gtk_box_append(GTK_BOX(toolbar), browser->uri);
-    gtk_box_append(GTK_BOX(toolbar), menu_button);
-
     GtkWidget *new_tab = gtk_button_new_from_icon_name("list-add-symbolic");
     gtk_widget_add_css_class(new_tab, "flat");
     gtk_widget_set_tooltip_text(new_tab, "New Tab");
@@ -575,10 +567,38 @@ browser_window_new(GtkApplication *application)
     gtk_notebook_set_action_widget(GTK_NOTEBOOK(browser->notebook), new_tab,
                                    GTK_PACK_END);
 
-    GtkWidget *content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    gtk_box_append(GTK_BOX(content), toolbar);
-    gtk_box_append(GTK_BOX(content), browser->notebook);
-    gtk_window_set_child(GTK_WINDOW(browser->window), content);
+    if (look == INDIGO_LOOK_GNOME) {
+        /* GNOME puts navigation and the location bar in the header bar. */
+        GtkWidget *header = gtk_header_bar_new();
+
+        gtk_header_bar_pack_start(GTK_HEADER_BAR(header), browser->back);
+        gtk_header_bar_pack_start(GTK_HEADER_BAR(header), browser->forward);
+        gtk_header_bar_pack_start(GTK_HEADER_BAR(header), browser->refresh);
+        gtk_header_bar_set_title_widget(GTK_HEADER_BAR(header), browser->uri);
+        gtk_header_bar_pack_end(GTK_HEADER_BAR(header), menu_button);
+
+        gtk_window_set_titlebar(GTK_WINDOW(browser->window), header);
+        gtk_window_set_child(GTK_WINDOW(browser->window), browser->notebook);
+    } else {
+        /* KDE keeps the toolbar above the tab strip, like Dolphin. */
+        GtkWidget *toolbar = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
+        GtkWidget *content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+
+        gtk_widget_set_margin_start(toolbar, 6);
+        gtk_widget_set_margin_end(toolbar, 6);
+        gtk_widget_set_margin_top(toolbar, 6);
+        gtk_widget_set_margin_bottom(toolbar, 6);
+
+        gtk_box_append(GTK_BOX(toolbar), browser->back);
+        gtk_box_append(GTK_BOX(toolbar), browser->forward);
+        gtk_box_append(GTK_BOX(toolbar), browser->refresh);
+        gtk_box_append(GTK_BOX(toolbar), browser->uri);
+        gtk_box_append(GTK_BOX(toolbar), menu_button);
+
+        gtk_box_append(GTK_BOX(content), toolbar);
+        gtk_box_append(GTK_BOX(content), browser->notebook);
+        gtk_window_set_child(GTK_WINDOW(browser->window), content);
+    }
 
     browser->omnibox = omnibox_new(browser->uri, GTK_NOTEBOOK(browser->notebook),
                                    on_omnibox_open_tab, on_omnibox_search,

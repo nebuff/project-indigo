@@ -14,7 +14,7 @@
 static const char *SETTINGS_CSS =
     "html, body { margin: 0; height: 100%; }"
     "body { display: flex; align-items: center; justify-content: center;"
-    "       font-family: Cantarell, Inter, system-ui, sans-serif; font-size: 22px;"
+    "       font-family: system-ui, sans-serif; font-size: 22px;"
     "       background: #fafafb; color: #242424; }"
     "@media (prefers-color-scheme: dark) {"
     "  body { background: #1d1d20; color: #deddda; }"
@@ -94,7 +94,6 @@ monogram_texture(const char *host)
     cairo_set_source_rgb(cr, red, green, blue);
     cairo_fill(cr);
 
-    pango_font_description_set_family(font, "Cantarell");
     pango_font_description_set_weight(font, PANGO_WEIGHT_SEMIBOLD);
     pango_font_description_set_absolute_size(font, MONOGRAM_SIZE * 0.46 * PANGO_SCALE);
     pango_layout_set_font_description(layout, font);

@@ -19,6 +19,7 @@ executable(
   'src/main.c',
   'src/browser.c',
   'src/history.c',
+  'src/look.c',
   'src/menu.c',
   'src/omnibox.c',
   'src/pages.c',
