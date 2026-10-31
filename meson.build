@@ -1,4 +1,4 @@
-project('indigo', 'c', version: '0.1.0')
+project('indigo', 'c', version: '0.1.1')
 
 gnome = import('gnome')
 
